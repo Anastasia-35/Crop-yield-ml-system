@@ -1,0 +1,108 @@
+<!-- templates/visualize.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Crop Yield Visualization</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    
+
+</head>
+    <body class="visualization-page">
+        
+
+        <h2 class="visualization-title">CROP YIELD VISUALIZATION</h2>
+
+        {% if prediction_history %}
+        {% set latest = prediction_history[0] %}
+
+        <!-- filter bar-->
+        <div class="filter-bar">
+            <div class="filter-bar">
+                <label for="cropFilter">Filter by Crop:</label>
+                <select id="cropFilter">
+                    <option value="All">All Crops</option>
+                </select>
+            </div>
+        </div>
+        
+
+    
+    <!-- Charts -->
+    <div class="charts-grid">
+
+        <div class="chart-card wide">
+            <h4>📈 Yield, Rainfall & Temperature</h4>
+            <canvas id="yieldChart"></canvas>
+        </div>
+
+        <div class="chart-card">
+            <h4>🌧️ Rainfall vs Yield</h4>
+            <canvas id="rainfallScatter"></canvas>
+        </div>
+
+        <div class="chart-card">
+            <h4>🌱 Average Yield per Crop</h4>
+            <canvas id="cropBar"></canvas>
+        </div>
+
+        <div class="chart-card">
+            <h4>🧪 Fertilizer Usage</h4>
+            <canvas id="fertilizerPie"></canvas>
+        </div>
+
+
+    </div>
+
+        <!-- Prediction History Table -->
+            <div class="history-container"></div>
+                <h3 class="history-title">Latest Prediction History</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Crop</th>
+                            <th>Rainfall (mm)</th>
+                            <th>Temp (°C)</th>
+                            <th>Days</th>
+                            <th>Fertilizer</th>
+                            <th>Irrigation</th>
+                            <th>Predicted Yield</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for record in prediction_history[:5] %}   {# Take first 5, then reverse #}
+
+                        <tr>
+                            <td>{{ record.crop }}</td>
+                            <td>{{ record.rainfall }}</td>
+                            <td>{{ record.temperature }}</td>
+                            <td>{{ record.days_to_harvest }}</td>
+                            <td class="fertilizer">{% if record.fertilizer_used %}✅{% else %}❌{% endif %}</td>
+                            <td class="irrigation">{% if record.irrigation_used %}💧{% else %}❌{% endif %}</td>
+                            <td>{{ record.predicted_yield }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+
+        {% else %}
+            <p>No predictions yet. Go make one! 🌱</p>
+        {% endif %}
+
+        <!-- Back to Form -->
+        <a href="{{ url_for('home') }}">
+            <button style="margin-top:20px;">⬅ Back to Form</button>
+        </a>
+
+        <!-- JS -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script id="prediction-data" type="application/json">
+            {{ prediction_history | default([]) | tojson }}
+        </script>
+        <script src="{{ url_for('static', filename='dashboard.js') }}"></script>
+
+    </body>
+</html>

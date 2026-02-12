@@ -161,7 +161,7 @@ crop-yield-prediction/
 │   └── crop_yield_model.pkl
 │
 ├── notebooks/
-│   └── crop_yield_eda_training.ipynb
+│   └── Crop_Yield.ipynb
 │
 ├── static/
 │   ├── dashboard.js

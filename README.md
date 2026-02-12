@@ -176,6 +176,9 @@ crop-yield-prediction/
     └── (dataset not included – download from Kaggle)
 ```
 
+Note: The trained model file is not included due to size limitations. 
+You can retrain the model using the provided notebook.
+
 ---
 
 ## 🚀 Installation & Setup
@@ -283,3 +286,4 @@ Response:
 - Real-world ML system simulation  
 
 This project demonstrates a complete ML system rather than just a trained model.
+
